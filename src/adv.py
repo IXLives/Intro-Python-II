@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -33,11 +34,18 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# for rooms in room:
+#     print(f'\n{room[rooms]}')
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+player1 = Player('Locke')
+location = player1.getLocation()
+
+# print(f'{player1.name} is at {room[location]}')
 
 # Write a loop that:
 #

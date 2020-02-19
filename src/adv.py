@@ -64,6 +64,8 @@ room['treasure'].exits = ['s']
 player1 = Player('Locke')
 location = player1.getLocation()
 choice = ''
+
+# print(room[location].n_to)
 # print(f'{player1.name} is at {room[location]}')
 
 # Write a loop that:
@@ -78,7 +80,40 @@ choice = ''
 # If the user enters "q", quit the game.
 
 while choice != 'q':
-    print(f'{room[location]}')
-    exits = room[location].exits
+    currentRoom = room[player1.getLocation()]
+    print(currentRoom)
+    exits = currentRoom.exits
     choice = input(
-        f'Choose your path, adventurer.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
+        f'Choose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
+    if choice == 'n':
+        for opt in exits:
+            if opt == 'n':
+                newRoom = currentRoom.n_to
+                currentRoom = newRoom
+                continue
+    elif choice == 's':
+        for opt in exits:
+            if opt == 's':
+                newRoom = currentRoom.s_to
+                currentRoom = newRoom
+                continue
+
+    elif choice == 'e':
+        for opt in exits:
+            if opt == 'e':
+                newRoom = currentRoom.e_to
+                currentRoom = newRoom
+                continue
+
+    elif choice == 'w':
+        for opt in exits:
+            if opt == 'w':
+                newRoom = currentRoom.w_to
+                currentRoom = newRoom
+                continue
+
+    else:
+        print(f'{room[location]}')
+        exits = room[location].exits
+        choice = input(
+            f'Your last choice was invalid.\nChoose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')

@@ -63,6 +63,7 @@ room['treasure'].exits = ['s']
 # Make a new player object that is currently in the 'outside' room.
 player1 = Player('Locke')
 location = player1.getLocation()
+currentRoom = room[player1.getLocation()]
 choice = ''
 
 # print(room[location].n_to)
@@ -80,38 +81,29 @@ choice = ''
 # If the user enters "q", quit the game.
 
 while choice != 'q':
-    currentRoom = room[player1.getLocation()]
-    print(currentRoom)
+    print(f'Your Location:\n {currentRoom}')
     exits = currentRoom.exits
     choice = input(
         f'Choose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
-    if choice == 'n':
-        for opt in exits:
-            if opt == 'n':
-                newRoom = currentRoom.n_to
-                currentRoom = newRoom
-                continue
-    elif choice == 's':
-        for opt in exits:
-            if opt == 's':
-                newRoom = currentRoom.s_to
-                currentRoom = newRoom
-                continue
-
-    elif choice == 'e':
-        for opt in exits:
-            if opt == 'e':
-                newRoom = currentRoom.e_to
-                currentRoom = newRoom
-                continue
-
-    elif choice == 'w':
-        for opt in exits:
-            if opt == 'w':
-                newRoom = currentRoom.w_to
-                currentRoom = newRoom
-                continue
-
+    if choice == 'n' or choice == 'north' or choice == 'North' and dir(currentRoom).count('n_to') > 0:
+        newRoom = currentRoom.n_to
+        currentRoom = newRoom
+        continue
+    elif choice == 's' and dir(currentRoom).count('s_to') > 0:
+        newRoom = currentRoom.s_to
+        currentRoom = newRoom
+        continue
+    elif choice == 'e' and dir(currentRoom).count('e_to') > 0:
+        newRoom = currentRoom.e_to
+        currentRoom = newRoom
+        continue
+    elif choice == 'w' and dir(currentRoom).count('w_to') > 0:
+        newRoom = currentRoom.w_to
+        currentRoom = newRoom
+        continue
+    elif choice == 'q' or choice == 'quit' or choice == 'qq' or choice == 'QQ' or choice == 'Q':
+        print('Farewell,', player1.name)
+        exit
     else:
         print(f'{room[location]}')
         exits = room[location].exits

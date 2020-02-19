@@ -26,13 +26,32 @@ earlier adventurers. The only exit is to the south."""),
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
+room['outside'].exits = ['n']
+
 room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
 room['foyer'].e_to = room['narrow']
+room['foyer'].exits = ['n', 's', 'e']
+
 room['overlook'].s_to = room['foyer']
+room['overlook'].exits = ['s']
+
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
+room['narrow'].exits = ['w', 'n']
+
 room['treasure'].s_to = room['narrow']
+room['treasure'].exits = ['s']
+
+
+# room['outside'].n_to(room['foyer'])
+# room['foyer'].s_to(room['outside'])
+# room['foyer'].n_to(room['overlook'])
+# room['foyer'].e_to(room['narrow'])
+# room['overlook'].s_to(room['foyer'])
+# room['narrow'].w_to(room['foyer'])
+# room['narrow'].n_to(room['treasure'])
+# room['treasure'].s_to(room['narrow'])
 
 # for rooms in room:
 #     print(f'\n{room[rooms]}')
@@ -44,7 +63,7 @@ room['treasure'].s_to = room['narrow']
 # Make a new player object that is currently in the 'outside' room.
 player1 = Player('Locke')
 location = player1.getLocation()
-
+choice = ''
 # print(f'{player1.name} is at {room[location]}')
 
 # Write a loop that:
@@ -57,3 +76,9 @@ location = player1.getLocation()
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+while choice != 'q':
+    print(f'{room[location]}')
+    exits = room[location].exits
+    choice = input(
+        f'Choose your path, adventurer.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')

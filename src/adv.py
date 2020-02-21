@@ -1,6 +1,6 @@
 from room import Room
 from player import Player
-
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -43,25 +43,22 @@ room['narrow'].exits = ['w', 'n']
 room['treasure'].s_to = room['narrow']
 room['treasure'].exits = ['s']
 
-
-# room['outside'].n_to(room['foyer'])
-# room['foyer'].s_to(room['outside'])
-# room['foyer'].n_to(room['overlook'])
-# room['foyer'].e_to(room['narrow'])
-# room['overlook'].s_to(room['foyer'])
-# room['narrow'].w_to(room['foyer'])
-# room['narrow'].n_to(room['treasure'])
-# room['treasure'].s_to(room['narrow'])
-
-# for rooms in room:
-#     print(f'\n{room[rooms]}')
-
 #
 # Main
 #
 
+# Items
+item = {
+    'torch': Item('a torch', 'A stick that has been wrapped in oiled cloth, the cloth is aflame.')
+}
+room['outside'].addItem(item['torch'])
+
+#
+# Player
+#
+
 # Make a new player object that is currently in the 'outside' room.
-player1 = Player('Locke')
+player1 = Player(input('Enter your name, adventurer.\n'))
 location = player1.getLocation()
 currentRoom = room[player1.getLocation()]
 choice = ''
@@ -81,31 +78,39 @@ choice = ''
 # If the user enters "q", quit the game.
 
 while choice != 'q':
-    print(f'Your Location:\n {currentRoom}')
+    print(f'Your Location:\n{currentRoom}')
     exits = currentRoom.exits
+    items = currentRoom.items
+    if len(items) > 0:
+        print(f'On the ground lies:')
+        for item in items:
+            print(item.name)
     choice = input(
         f'Choose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
-    if choice == 'n' or choice == 'north' or choice == 'North' and dir(currentRoom).count('n_to') > 0:
-        newRoom = currentRoom.n_to
-        currentRoom = newRoom
-        continue
-    elif choice == 's' and dir(currentRoom).count('s_to') > 0:
-        newRoom = currentRoom.s_to
-        currentRoom = newRoom
-        continue
-    elif choice == 'e' and dir(currentRoom).count('e_to') > 0:
-        newRoom = currentRoom.e_to
-        currentRoom = newRoom
-        continue
-    elif choice == 'w' and dir(currentRoom).count('w_to') > 0:
-        newRoom = currentRoom.w_to
-        currentRoom = newRoom
-        continue
-    elif choice == 'q' or choice == 'quit' or choice == 'qq' or choice == 'QQ' or choice == 'Q':
-        print('Farewell,', player1.name)
-        exit
+    if len(choice) == 1:
+        if choice == 'n' or choice == 'north' or choice == 'North' and dir(currentRoom).count('n_to') > 0:
+            newRoom = currentRoom.n_to
+            currentRoom = newRoom
+            continue
+        elif choice == 's' and dir(currentRoom).count('s_to') > 0:
+            newRoom = currentRoom.s_to
+            currentRoom = newRoom
+            continue
+        elif choice == 'e' and dir(currentRoom).count('e_to') > 0:
+            newRoom = currentRoom.e_to
+            currentRoom = newRoom
+            continue
+        elif choice == 'w' and dir(currentRoom).count('w_to') > 0:
+            newRoom = currentRoom.w_to
+            currentRoom = newRoom
+            continue
+        elif choice == 'q' or choice == 'quit' or choice == 'qq' or choice == 'QQ' or choice == 'Q':
+            print('Farewell,', player1.name)
+            exit
+        else:
+            print(f'{room[location]}')
+            exits = room[location].exits
+            choice = input(
+                f'Your last choice was invalid.\nChoose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
     else:
-        print(f'{room[location]}')
-        exits = room[location].exits
-        choice = input(
-            f'Your last choice was invalid.\nChoose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
+        choice = input('Incorrect')

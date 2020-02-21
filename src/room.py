@@ -8,6 +8,7 @@ class Room:
         self.description = description
         self.linked_rooms = []
         self.exits = []
+        self.items = []
 
     def __str__(self):
         output = f"{self.name}\n{self.description}"
@@ -15,18 +16,11 @@ class Room:
         #     output += f'\nExit to the {exit}'
         return output
 
+    def addItem(self, item):
+        self.items.append(item)
+
+    def removeItem(self, item):
+        self.items.remove(item)
+
     exits = []
     linked_rooms = []
-
-    # def n_to(self, room):
-    #     self.exits.append('n')
-    #     print(self)
-
-    # def s_to(self, room):
-    #     self.exits.append('s')
-
-    # def e_to(self, room):
-    #     self.exits.append('e')
-
-    # def w_to(self, room):
-    #     self.exits.append('w')

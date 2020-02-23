@@ -49,9 +49,9 @@ room['treasure'].exits = ['s']
 
 # Items
 item = {
-    'torch': Item('a torch', 'A stick that has been wrapped in oiled cloth, the cloth is aflame.')
+    'torch': Item('torch', 'A stick that has been wrapped in oiled cloth, the cloth is aflame.')
 }
-room['outside'].addItem(item['torch'])
+room['outside'].addItem(item['torch'].name, item['torch'].description)
 
 #
 # Player
@@ -84,7 +84,7 @@ while choice != 'q':
     if len(items) > 0:
         print(f'On the ground lies:')
         for item in items:
-            print(item.name)
+            print(item)
     choice = input(
         f'Choose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
     if len(choice) == 1:
@@ -112,5 +112,23 @@ while choice != 'q':
             exits = room[location].exits
             choice = input(
                 f'Your last choice was invalid.\nChoose your path, {player1.name}.\nThere are exits to the {exits[:]}:\nEnter q to Quit.')
-    else:
-        choice = input('Incorrect')
+    elif len(choice) > 1 and len(choice) > 2:
+        x, y = choice.split()
+        if x.capitalize() == 'Get' or x.capitalize() == 'Take':
+            for key, value in items.items():
+                if key == y:
+                    player1.getItem(key, value)
+                    currentRoom.removeItem(key)
+                    print(f'You pick up a {y}.')
+                else:
+                    print(f'There is no {y} here.')
+
+        elif x.capitalize() == 'Drop':
+            if player1.items.count(y) > 0:
+                player1.dropItem(y)
+                currentRoom.addItem(items[y].name, items[y].description)
+                print(f'You dropped {player1.items[y].name}')
+            else:
+                print(f"You don't have a {y.name}")
+    # elif len(choice) > 2:
+    #     choice = input('Incorrect')

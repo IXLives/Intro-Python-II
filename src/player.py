@@ -6,7 +6,7 @@ class Player:
     def __init__(self, name, location='outside'):
         self.name = name
         self.location = location
-        self.items = []
+        self.items = {}
 
     def __str__(self):
         output = f"{self.name}."
@@ -15,8 +15,8 @@ class Player:
     def getLocation(self):
         return self.location
 
-    def getItem(self, item):
-        self.items.append(item)
+    def getItem(self, item_name, item_description):
+        self.items[item_name] = item_description
 
     def dropItem(self, item):
-        self.items.remove(item)
+        self.items.pop(item)

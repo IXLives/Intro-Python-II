@@ -20,7 +20,10 @@ class Room:
         self.items[item_name] = item_description
 
     def removeItem(self, item):
-        self.items.pop(item)
+        del self.items[item]
+
+    def getItems(self):
+        return self.items
 
     exits = []
     linked_rooms = []

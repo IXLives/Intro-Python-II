@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from item import Item
+from copy import deepcopy
 # Declare all the rooms
 
 room = {
@@ -60,7 +61,7 @@ room['outside'].addItem(item['torch'].name, item['torch'].description)
 # Make a new player object that is currently in the 'outside' room.
 player1 = Player(input('Enter your name, adventurer.\n'))
 location = player1.getLocation()
-currentRoom = room[player1.getLocation()]
+currentRoom = room[location]
 choice = ''
 
 # print(room[location].n_to)
@@ -80,7 +81,8 @@ choice = ''
 while choice != 'q':
     print(f'Your Location:\n{currentRoom}')
     exits = currentRoom.exits
-    items = currentRoom.items
+    items = currentRoom.getItems()
+    inventory = player1.getItems()
     if len(items) > 0:
         print(f'On the ground lies:')
         for item in items:
@@ -115,20 +117,23 @@ while choice != 'q':
     elif len(choice) > 1 and len(choice) > 2:
         x, y = choice.split()
         if x.capitalize() == 'Get' or x.capitalize() == 'Take':
-            for key, value in items.items():
+            itemlist = deepcopy(items)
+            for key in itemlist:
                 if key == y:
-                    player1.getItem(key, value)
+                    player1.getItem(key, items[key])
                     currentRoom.removeItem(key)
                     print(f'You pick up a {y}.')
                 else:
                     print(f'There is no {y} here.')
 
         elif x.capitalize() == 'Drop':
-            if player1.items.count(y) > 0:
+            itemlist = deepcopy(inventory)
+            if player1.items[y]:
                 player1.dropItem(y)
-                currentRoom.addItem(items[y].name, items[y].description)
-                print(f'You dropped {player1.items[y].name}')
+                currentRoom.addItem(y, itemlist[y])
+                print(itemlist)
+                print(f'You dropped {y}')
             else:
-                print(f"You don't have a {y.name}")
+                print(f"You don't have a {y}")
     # elif len(choice) > 2:
     #     choice = input('Incorrect')

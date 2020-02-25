@@ -15,8 +15,11 @@ class Player:
     def getLocation(self):
         return self.location
 
+    def getItems(self):
+        return self.items
+
     def getItem(self, item_name, item_description):
         self.items[item_name] = item_description
 
     def dropItem(self, item):
-        self.items.pop(item)
+        del self.items[item]
